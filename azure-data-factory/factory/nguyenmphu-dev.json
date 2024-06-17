@@ -1,0 +1,9 @@
+{
+	"name": "nguyenmphu-dev",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "680601b1-902f-49dd-a5c0-74a238503561",
+		"tenantId": "d14b41ad-2c6a-40d6-8362-08c1c36f6fda"
+	}
+}
