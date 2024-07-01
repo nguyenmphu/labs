@@ -1,0 +1,41 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: prometheus
+    metrics_path: /metrics
+    scheme: http
+    follow_redirects: true
+    static_configs:
+      - targets:
+        - localhost:9090
+
+  - job_name: spark
+    metric_relabel_configs:
+    # Driver metrics
+    - source_labels: [__name__]
+      regex: 'spark_(\w+)_(driver_\w+)'
+      replacement: '${1}'
+      target_label: app_id
+    - source_labels: [__name__]
+      regex: 'spark_(\w+)_(driver_\w+)'
+      replacement: '${2}'
+      target_label: __name__
+    # Executor metrics
+    - source_labels: [__name__]
+      regex: 'spark_(\w+)_(\d+)_(executor_\w+)'
+      replacement: '${1}'
+      target_label: app_id
+    - source_labels: [__name__]
+      regex: 'spark_(\w+)_(\d+)_(executor_\w+)'
+      replacement: '${2}'
+      target_label: executor_id
+    - source_labels: [__name__]
+      regex: 'spark_(\w+)_(\d+)_(executor_\w+)'
+      replacement: '${3}'
+      target_label: __name__
+    honor_labels: true
+    static_configs:
+      - targets:
+        - statsd:9102
